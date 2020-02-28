@@ -17,12 +17,30 @@ fi
 
 echo "2) Se descargan los GTFS de la api transporte"
 ./get_gtfs_estaticos.sh
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -gt 0 ] ; then
+  echo "Error al descargar los gtfs"
+  exit 1
+fi
 
 echo "3) Se construye el pbf desde la base osm_gba de 10.9.6.110 (ver accesos del pg_hba)"
 ./get_pbf.sh
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -gt 0 ] ; then
+  echo "Error al construir pbf"
+  exit 1
+fi
 
 echo "4) Se crean los archifos de config de OTP"
 ./generate_config_files.sh
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -gt 0 ] ; then
+  echo "Error al crear archivos de configuracion"
+  exit 1
+fi
 
 echo "5) Se hace el build del jar"
 docker run -it --rm --name otp_build_project -v "$PWD/$OTP_DIR":/usr/src/app -w /usr/src/app maven:3.6.3-jdk-8 mvn clean package -Dmaven.test.skip=true
