@@ -1,3 +1,5 @@
-opentripplanner/*
+otp/app
+oba/app
+oba/bundle
 buenosaires/*
 backups/*

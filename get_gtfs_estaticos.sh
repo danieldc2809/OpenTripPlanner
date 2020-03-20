@@ -17,18 +17,25 @@ CLIENT_SECRET="322F948f8D3B4400B447e6D0830a19Da"
 mkdir -p "$DATA_DIR"
 mkdir -p "$BKP_DIR"
 
+echo "Se van a descargar los GTFS en la carpeta $DATA_DIR y mover los viejos a $BKP_DIR"
+read -r -p "Este paso se puede saltear si ya los descargaron ¿Descargar nuevos GTFS? [y/N] " response
+if [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]
+then
+  #Se hace backup de cada GTFS
+  fecha=$(date +"%Y%m%d")
+  cd $DATA_DIR
+  for gtfs in *.zip; do
+    mv "$gtfs" "../$BKP_DIR/${fecha}_$gtfs"
+  done
+  cd ..
 
-#Se hace backup de cada GTFS
-fecha=$(date +"%Y%m%d")
-cd $DATA_DIR
-for gtfs in *.zip; do
-  mv "$gtfs" "../$BKP_DIR/${fecha}_$gtfs"
-done
-cd ..
+  #Se descargan los nuevos GTFS
+  for f in "${GTFS[@]}"
+  do
+      echo "descargando gtfs estatico de $f ......"
+      wget "$API_TRANSPORTE/$f/feed-gtfs?client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET" -O "$DATA_DIR/$f.zip"
+  done
+else
+    echo "INFO: ok, no se descargan nuevos GTFS y se va al siguiente paso ..."	
+fi 
 
-#Se descargan los nuevos GTFS
-for f in "${GTFS[@]}"
-do
-    echo "descargando gtfs estatico de $f ......"
-    wget "$API_TRANSPORTE/$f/feed-gtfs?client_id=$CLIENT_ID&client_secret=$CLIENT_SECRET" -O "$DATA_DIR/$f.zip"
-done

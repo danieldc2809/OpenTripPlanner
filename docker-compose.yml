@@ -1,10 +1,37 @@
-version: '3'
+version: '3.7'
 
 services:
         otp:
                 container_name: otp-ba
                 image: opentripplanner-ba:02
-                build: .
+                build: ./otp/
                 command: java -Xmx16G -jar /var/otp/otp-1.5.0-SNAPSHOT-shaded.jar --router buenosaires --graphs /var/otp/graphs --server
+                volumes:
+                        - ./buenosaires:/var/otp/graphs/buenosaires
                 ports:
                         - 8080:8080
+
+        postgres:
+                image: "postgres:10"
+                environment:
+                        - POSTGRES_USER=postgres
+                        - POSTGRES_DB=onebusaway
+                        - POSTGRES_HOST_AUTH_METHOD=trust
+                ports:
+                # Use a different port than default, in case the host
+                # is running its own Postgres instance
+                # Can connect to this database from the host, using
+                # psql postgres://postgres@localhost:5433/onebusaway
+                        - "5433:5432"                        
+
+        oba:
+                depends_on:
+                # Automatically bring up the database service first
+                        - postgres
+                container_name: oba-ba
+                image: onebusaway-ba:01
+                build: ./oba/
+                volumes:
+                        - ./oba/bundle:/bundle                                               
+                ports:
+                        - 8888:8080
