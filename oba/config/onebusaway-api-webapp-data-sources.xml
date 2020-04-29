@@ -17,8 +17,7 @@
     <property name="url" value="jdbc:postgresql://postgres/onebusaway" />
     <property name="username" value="postgres" />
   </bean>
-<!-- 
-  <bean id="agencyMetadataSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+  <bean id="agencyMetadataSessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
     <property name="dataSource" ref="agencyMetadataDataSource" />
     <property name="annotatedClasses">
       <list>
@@ -34,47 +33,23 @@
       </props>
     </property>
   </bean>
--->
-  <!-- Allows the TEST key for OBA API testing.  Should be removed in production -->
-  <bean class="org.onebusaway.users.impl.CreateApiKeyAction">
-    <property name="key" value="TEST"/>
-  </bean>
-
-  <!-- iOS Client key -->
-  <bean class="org.onebusaway.users.impl.CreateApiKeyAction">
-    <property name="key" value="org.onebusaway.iphone"/>
-  </bean>
-
-  <!-- Android Client key -->
-  <bean class="org.onebusaway.users.impl.CreateApiKeyAction">
-    <property name="key" value="v1_BktoDJ2gJlu6nLM6LsT9H8IUbWc=cGF1bGN3YXR0c0BnbWFpbC5jb20="/>
-  </bean>
-
-  <!-- Windows Phone Client key -->
-  <bean class="org.onebusaway.users.impl.CreateApiKeyAction">
-    <property name="key" value="v1_C5+aiesgg8DxpmG1yS2F/pj2zHk=c3BoZW5yeUBnbWFpbC5jb20=="/>
-  </bean>
-
-  <!-- Windows 8 Client key -->
-  <bean class="org.onebusaway.users.impl.CreateApiKeyAction">
-    <property name="key" value="693c0a55-9ef0-4302-8bc3-f9b2db93e124"/>
-  </bean>
-
-  <!-- Alexa Skill key -->
-  <bean class="org.onebusaway.users.impl.CreateApiKeyAction">
-   <property name="key" value="e5c0e97a-729d-4fdb-a3ca-2fccb20ac3ab"/>
-  </bean>
-
-  <!-- Pebble Smartwatch key -->
-  <bean class="org.onebusaway.users.impl.CreateApiKeyAction">
-    <property name="key" value="48d59e79-ed33-4be0-9db3-912f8f521fec"/>
-  </bean>
-
   <bean class="org.onebusaway.container.spring.PropertyOverrideConfigurer">
     <property name="properties">
       <props>
         <prop key="cacheManager.cacheManagerName">org.onebusaway.api_webapp.cacheManager</prop>
       </props>
     </property>
+  </bean>
+  <bean class="org.onebusaway.container.spring.PropertyOverrideConfigurer">
+    <property name="properties">
+      <props>
+        <prop key="cacheManager.cacheManagerName">org.onebusaway.api_webapp.cacheManager</prop>
+      </props>
+    </property>
+   </bean>
+
+  <!-- Allows the TEST key for OBA API testing.  Should be removed in production -->
+  <bean class="org.onebusaway.users.impl.CreateApiKeyAction">
+    <property name="key" value="TEST"/>
   </bean>
 </beans>

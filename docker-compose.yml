@@ -17,19 +17,22 @@ services:
                         - POSTGRES_USER=postgres
                         - POSTGRES_DB=onebusaway
                         - POSTGRES_HOST_AUTH_METHOD=trust
-                ports:
-                # Use a different port than default, in case the host
-                # is running its own Postgres instance
-                # Can connect to this database from the host, using
+                ports:               
                 # psql postgres://postgres@localhost:5433/onebusaway
                         - "5433:5432"                        
+        build-bundle:
+                build: ./oba/
+                volumes:
+                # poner el gtfs en oba/bundle
+                        - ./oba/bundle:/bundle
+                        - ./buenosaires:/data
+                command: ["sh", "-c", "cd /bundle && java -Xss10m -Xmx10G -jar /app/onebusaway-transit-data-federation-builder-2.0.0-withAllDependencies.jar /data/feed_demo.zip ."]
 
         oba:
                 depends_on:
-                # Automatically bring up the database service first
                         - postgres
                 container_name: oba-ba
-                image: onebusaway-ba:01
+                image: onebusaway-ba:dev
                 build: ./oba/
                 volumes:
                         - ./oba/bundle:/bundle                                               

@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# referencia: https://codefresh.io/docker-tutorial/java_docker_pipeline/
-
-OTP_DIR=otp/app
-OTP_REPO=https://repositorio-asi.buenosaires.gob.ar/ssppbe_usig/opentripplanner.git
 
 echo "Comprobando requerimientos: git, docker y osmosis"
 # Requerimiento tener instalado OSMOSIS
@@ -84,4 +80,5 @@ fi
 echo " "
 echo "<---------- FIN ------------------>"
 echo " "
-echo "FIN: si ya está instalado OTP y generado el pbf con grafo entonces ya se puede correr docker-compose up"
+echo "FIN: si ya está instalado OTP y OBA"
+echo "Solo falta generar el bundle de oba e iniciar los servicios"
