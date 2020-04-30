@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+        otp:
+                container_name: otp-ba
+                image: opentripplanner-ba:02
+                build: ./otp/
+                command: java -Xmx16G -jar /var/otp/otp-1.5.0-SNAPSHOT-shaded.jar --router buenosaires --graphs /var/otp/graphs --server
+                volumes:
+                        - ./buenosaires:/var/otp/graphs/buenosaires
+                ports:
+                        - 8080:8080

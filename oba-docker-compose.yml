@@ -1,15 +1,6 @@
 version: '3.7'
 
-services:
-        otp:
-                container_name: otp-ba
-                image: opentripplanner-ba:02
-                build: ./otp/
-                command: java -Xmx16G -jar /var/otp/otp-1.5.0-SNAPSHOT-shaded.jar --router buenosaires --graphs /var/otp/graphs --server
-                volumes:
-                        - ./buenosaires:/var/otp/graphs/buenosaires
-                ports:
-                        - 8080:8080
+services:       
 
         postgres:
                 image: "postgres:10"
@@ -26,7 +17,7 @@ services:
                 # poner el gtfs en oba/bundle
                         - ./oba/bundle:/bundle
                         - ./buenosaires:/data
-                command: ["sh", "-c", "cd /bundle && java -Xss10m -Xmx10G -jar /app/onebusaway-transit-data-federation-builder-2.0.0-withAllDependencies.jar /data/feed_demo.zip ."]
+                command: ["sh", "-c", "cd /bundle && java -Xss10m -Xmx10G -jar /app/onebusaway-transit-data-federation-builder-2.0.0-withAllDependencies.jar /data/colectivos.zip ."]
 
         oba:
                 depends_on:
